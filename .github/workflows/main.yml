@@ -45,7 +45,6 @@ jobs:
             rm -f zyc-clang.tar.gz
   
       - name: Setup KernelSU (Legacy)
-        if: ${{ matrix.variant == 'KSU' }} # Hanya pasang source KSU jika varian KSU
         run: |
           curl -LSs "https://raw.githubusercontent.com/rahmatsobrian/YoruNoKernelSU/dev/kernel/setup.sh" | bash -s legacy
 
