@@ -48,8 +48,8 @@ jobs:
 
       - name: Start Build with log)
         env:
-          KBUILD_BUILD_USER: "RahmatSobrian"
-          KBUILD_BUILD_HOST: "ReLIFE"
+          KBUILD_BUILD_USER: "Hoshino"
+          KBUILD_BUILD_HOST: "Yoru"
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
