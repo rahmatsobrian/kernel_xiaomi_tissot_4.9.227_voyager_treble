@@ -182,23 +182,30 @@ upload_telegram() {
         echo -e "$green[✓] Pixeldrain Link: $PD_LINK$white"
     else
         echo -e "$red[✗] Upload Pixeldrain Gagal!$white"
+        echo "PD Response: $PD_RESPONSE"
         PD_LINK="Upload Failed"
     fi
 
     echo -e "$yellow[+] Generating Safelinku shortlink...$white"
-    # Menggunakan metode standar Developer API Safelinku
-    SL_RESPONSE=$(curl -s "https://safelinku.com/api?api=${SAFELINKU_API_TOKEN}&url=${PD_LINK}")
-    SL_LINK=$(echo $SL_RESPONSE | jq -r .shortenedUrl)
+    # Menggunakan REST API v1 Safelinku
+    SL_RESPONSE=$(curl -s -X POST "https://safelinku.com/api/v1/links" \
+        -H "Authorization: Bearer ${SAFELINKU_API_TOKEN}" \
+        -H "Content-Type: application/json" \
+        -d "{\"url\": \"${PD_LINK}\"}")
+    
+    # Mengambil value 'url' dari respon JSON
+    SL_LINK=$(echo $SL_RESPONSE | jq -r .url)
 
-    if [ "$SL_LINK" != "null" ] && [ -n "$SL_LINK" ]; then
+    # Validasi apakah link berhasil didapatkan
+    if [ "$SL_LINK" != "null" ] && [ -n "$SL_LINK" ] && [ "$SL_LINK" != "" ]; then
         echo -e "$green[✓] Safelinku Link: $SL_LINK$white"
     else
         echo -e "$red[✗] Gagal membuat link Safelinku!$white"
+        echo -e "$red[!] Response Error: $SL_RESPONSE$white"
         SL_LINK="Generation Failed"
     fi
 
     echo -e "$yellow[+] Sending message to Telegram...$white"
-    # Kirimkan pesan dengan format Markdown
     curl -s -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
         -d chat_id="${TG_CHAT_ID}" \
         -d parse_mode=Markdown \
@@ -216,7 +223,6 @@ upload_telegram() {
 🔗 [Direct Download (Pixeldrain)](${PD_LINK})
 💰 [Support via Safelinku](${SL_LINK})"
 
-    # Jangan lupa panggil log di bagian paling akhir
     send_telegram_log
 }
 
