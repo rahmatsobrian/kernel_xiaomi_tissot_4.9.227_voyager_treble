@@ -265,10 +265,11 @@ EOF
 ⚠️ Safelinku: Generation Failed"
     fi
 
-    curl -s -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
-        -d chat_id="${TG_CHAT_ID}" \
-        -d parse_mode=Markdown \
-        -d text="🔥 *Kernel CI Build Test Success*
+    curl -s -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendDocument" \
+        -F chat_id="${TG_CHAT_ID}" \
+        -F document=@"${ZIP_PATH}" \
+        -F parse_mode="Markdown" \
+        -F caption="🔥 *Kernel CI Build Test Success*
 
 📱 *Device* : ${DEVICE}
 📦 *Kernel Name* : ${KERNEL_NAME}
