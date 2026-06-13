@@ -200,7 +200,7 @@ api_id = os.environ.get("TELE_API_ID", "")
 api_hash = os.environ.get("TELE_API_HASH", "")
 session_string = os.environ.get("TELE_SESSION", "")
 pd_link = os.environ.get("PD_LINK", "")
-bot_username = "@safelinku_bot"
+bot_username = "@safelinku_com_bot"
 
 async def main():
     if not api_id or not api_hash or not session_string:
